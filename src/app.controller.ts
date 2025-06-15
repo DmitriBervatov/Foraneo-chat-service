@@ -1,18 +1,9 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ChatService } from './chat/chat.service';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    private readonly chatService: ChatService,
-  ) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+  constructor(private readonly chatService: ChatService) {}
 
   @Post('chat')
   async testChat(@Body() body: { message: string }) {

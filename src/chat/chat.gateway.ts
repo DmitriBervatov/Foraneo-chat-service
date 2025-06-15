@@ -21,12 +21,16 @@ export class ChatGateway {
 
   @SubscribeMessage('message')
   async handleMessage(
-    @MessageBody() data: { message: string },
+    @MessageBody() data: { userId: string; message: string },
     @ConnectedSocket() client: Socket,
   ): Promise<void> {
     try {
       client.emit('userMessage', { message: data.message });
-      const response = await this.chatService.sendToGemini(data.message);
+
+      const response = await this.chatService.sendToN8N(
+        data.userId,
+        data.message,
+      );
       client.emit('aiResponse', { message: response });
     } catch (error) {
       console.error('Error en handleMessage:', error);
